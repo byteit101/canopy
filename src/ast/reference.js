@@ -11,6 +11,10 @@ util.assign(Reference.prototype, {
     return this.refName;
   },
 
+  updateName: function(callback) {
+    this.refName = callback(this.refName);
+  },
+
   toSexp: function() {
     return ['reference', this.refName];
   },

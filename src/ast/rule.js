@@ -12,6 +12,10 @@ util.assign(Rule.prototype, {
     return ['rule', this.name, this._expression.toSexp()];
   },
 
+  updateName: function(callback) {
+    this.name = callback(this.name);
+  },
+
   forEach: function(callback, context) {
     callback.call(context, this._expression);
   },

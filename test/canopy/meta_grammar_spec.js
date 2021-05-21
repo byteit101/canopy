@@ -644,4 +644,31 @@ jstest.describe("MetaGrammar", function() { with(this) {
           ').toSexp() )
     }})
   }})
+
+  describe('multigrammar', function() { with(this) {
+    describe('simple-multigrammer', function() { with(this) {
+      before(function() { with(this) {
+        this.compiler = new Compiler(' \
+        grammar FirstGram \
+          string <- SecondGram "bar "  \
+       >>>> grammar SecondGram \
+          string <- "foo" \
+        ')
+      }})
+
+      it('parses multigrammars', function() { with(this) {
+        assertEqual([
+                      ["grammar", "FirstGram",
+							          ["rule", "string", 
+								          ["sequence",
+                            ["reference", "SecondGram"],
+								            ["string", "bar "]]]],
+					            ["grammar", "SecondGram",
+                        ["rule", "string",
+                          ["string", "foo"]]]],
+
+            compiler.toSexp() )
+      }})
+    }})
+  }})
 }})

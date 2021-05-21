@@ -19,9 +19,14 @@ var Grammar      = require('./ast/grammar'),
     AnyChar      = require('./ast/any_char');
 
 var actions = {
+  multi_grammar: function(text, a, b, elements) {
+    var root = elements[1];
+    var children = elements[2].elements.map(x => x.elements[2]);
+    return new Grammar(root._name, root._rules, children);
+  },
   grammar: function(text, a, b, elements) {
-    var rules = elements[2].elements.map(function(e) { return e.rule });
-    return new Grammar(elements[1].id.text, rules);
+    var rules = elements[1].elements.map(function(e) { return e.rule });
+    return new Grammar(elements[0].id.text, rules, []);
   },
 
   rule: function(text, a, b, elements) {

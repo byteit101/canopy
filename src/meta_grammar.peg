@@ -2,8 +2,10 @@ grammar Canopy.MetaGrammar
 
 # ==============================================================================
 
-grammar               <-  _* grammar_name (_* rule)+ _*
-                          %grammar
+
+concat_grammar        <-  _* grammar ('>>>>' _* grammar)* %multi_grammar
+
+grammar               <- grammar_name (_* rule)+ _* %grammar
 
 grammar_name          <-  `grammar` ":"? _+ id:object_identifier
 
