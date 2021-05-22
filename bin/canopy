@@ -16,18 +16,18 @@ BUILDERS.rb = BUILDERS.ruby       = canopy.builders.ruby;
 try {
   var options   = nopt({lang: String}, {l: '--lang'}),
       lang      = options.lang || 'js',
-      inputFile = options.argv.remain[0];
+      inputFiles = options.argv.remain;
 
   if (!BUILDERS.hasOwnProperty(lang))
     throw new Error('Unrecognised target language: ' + lang);
 
   var comment = [
-    'This file was generated from ' + path.relative(process.cwd(), inputFile),
+    'This file was generated from ' + path.relative(process.cwd(), inputFiles[0]),
     'See http://canopy.jcoglan.com/ for documentation.'
   ];
 
-  var grammar = fs.readFileSync(inputFile, 'utf8'),
-      builder = BUILDERS[lang].create(inputFile, path.sep),
+  var grammar = inputFiles.map(inputFile => fs.readFileSync(inputFile, 'utf8')).join(">>>>"),
+      builder = BUILDERS[lang].create(inputFiles[0], path.sep),
       parser  = canopy.compile(grammar, builder),
       names   = Object.keys(parser);
 
